@@ -23,7 +23,7 @@ app.post('/posts', (req, res) => {
   posts[id] = { id, title };
 
   // let the client know the post was just created
-  res.status(201).send(post[id]);
+  res.status(201).send(posts[id]);
 });
 
 app.listen(4000, () => {
