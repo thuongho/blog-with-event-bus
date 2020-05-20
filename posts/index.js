@@ -3,9 +3,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 // randomBytes to generate random ID for posts
 const { randomBytes } = require('crypto');
+const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 // in memory storage
 const posts = {};
