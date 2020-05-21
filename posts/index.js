@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 // randomBytes to generate random ID for posts
 const { randomBytes } = require('crypto');
 const cors = require('cors');
+const axios = require('axios');
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,7 +17,7 @@ app.get('/posts', (req, res) => {
   res.send(posts);
 });
 
-app.post('/posts', (req, res) => {
+app.post('/posts', async (req, res) => {
   // random hex id
   const id = randomBytes(4).toString('hex');
   // body: { title: ... }
@@ -24,8 +25,19 @@ app.post('/posts', (req, res) => {
 
   posts[id] = { id, title };
 
+  await axios.post('http://localhost:4005/events', {
+    type: 'PostCreated',
+    data: { id, title }
+  });
+
   // let the client know the post was just created
   res.status(201).send(posts[id]);
+});
+
+app.post('/events', (req, res) => {
+  console.log('Received event', req.body.type);
+
+  res.send({});
 });
 
 app.listen(4000, () => {
