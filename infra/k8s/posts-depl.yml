@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: posts-depl
+spec:
+  # number of pods
+  replicas: 1
+  selector:
+    # tell Deployment you are in charge of all pods with label app: posts
+    matchLabels:
+      app: posts
+  # configuration for the pods
+  template:
+    metadata:
+      labels:
+        app: posts
+    # pod config
+    spec:
+      containers:
+        - name: posts
+          image: thuongho/posts
