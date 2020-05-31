@@ -10,7 +10,7 @@ const PostList = () => {
   const [posts, setPosts] = useState({});
 
   const fetchPost = async () => {
-    const res = await axios.get('http://build4fun.club:4002/posts');
+    const res = await axios.get('http://build4fun.club/posts');
     console.log('res', res);
 
     // axios will save response content in data
