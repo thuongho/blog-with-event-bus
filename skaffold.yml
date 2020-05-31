@@ -1,0 +1,63 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  # tells Skaffold there is a collection of configs intended for kubernetes
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  # whenever skaffold makes changes to image, it doesn't need to push up to docker hub
+  local:
+    push: false
+  # tells skaffold that some things need to be kept
+  artifacts:
+    - image: thuongho/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        # whenever there are changes to js files, put it into the pod
+        # whenever changes are made to outside of src, skaffold and rebuild and push the image
+        manual:
+          - src: 'src/**/*.js'
+            dest: .
+    - image: thuongho/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: thuongho/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: thuongho/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: thuongho/posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: thuongho/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
